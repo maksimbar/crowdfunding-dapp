@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./styles.jsx";
 import { shortenAddress } from "../../utils/index.js";
 import { toWei } from "../../utils/index.js";
 import CrowdfundingContract from "../../contracts/Crowdfunding.json";
 import Web3 from "web3";
-import { toDays } from "../../utils/index.js";
 
 const Card = ({ fundraiser }) => {
-  const [timeLeft, setTimeLeft] = useState(null);
   const navigate = useNavigate();
 
   const details = () => {
@@ -32,12 +30,6 @@ const Card = ({ fundraiser }) => {
         CrowdfundingContract.abi,
         deployedNetwork.address
       );
-
-      const timeLeft = await instance.methods
-        .timeUntilExpiration(fundraiser.id, dateInSecs)
-        .call();
-
-      setTimeLeft(toDays(timeLeft));
     } catch (error) {
       alert(
         `Failed to load web3, accounts, or contract. Check console for details.`

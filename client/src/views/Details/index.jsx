@@ -78,12 +78,6 @@ const Details = () => {
       setWeb3(web3);
       setContract(instance);
       setAccounts(accounts);
-
-      let campaignIsCompleted = await instance.methods
-        .numberOfCampaigns()
-        .call();
-
-      // console.log(campaignIsCompleted);
     } catch (error) {
       alert(
         `Failed to load web3, accounts, or contract. Check console for details.`
