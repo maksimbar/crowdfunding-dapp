@@ -26,7 +26,7 @@ const Details = () => {
 
   const init = async () => {
     try {
-      const web3 = new Web3(Web3.givenProvider || "http://localhost:9545");
+      const web3 = new Web3(Web3.givenProvider || "http://localhost:7545");
       const networkId = await web3.eth.net.getId();
       const accounts = await web3.eth.getAccounts();
       const deployedNetwork = CrowdfundingContract.networks[networkId];

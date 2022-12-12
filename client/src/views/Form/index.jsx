@@ -32,7 +32,8 @@ const NewFundraiser = () => {
 
   const init = async () => {
     try {
-      const web3 = new Web3(Web3.givenProvider || "http://localhost:9545");
+      const provider = await detectEthereumProvider();
+      const web3 = new Web3(provider);
       const networkId = await web3.eth.net.getId();
       const accounts = await web3.eth.getAccounts();
       const deployedNetwork = CrowdfundingContract.networks[networkId];
@@ -43,6 +44,7 @@ const NewFundraiser = () => {
       setWeb3(web3);
       setContract(instance);
       setAccounts(accounts);
+      console.log(accounts);
     } catch (error) {
       alert(
         `Failed to load web3, accounts, or contract. Check console for details.`
@@ -54,8 +56,7 @@ const NewFundraiser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    navigate("/home");
-
+    // navigate("/home");
     const provider = await detectEthereumProvider();
     const web3 = new Web3(provider);
     const networkId = await web3.eth.net.getId();
@@ -66,7 +67,6 @@ const NewFundraiser = () => {
       CrowdfundingContract.abi,
       deployedNetwork.address
     );
-
     await contract.methods
       .createCampaign(
         accounts[0],
@@ -76,8 +76,7 @@ const NewFundraiser = () => {
         form.deadline,
         form.image
       )
-      .send({ from: accounts[0] });
-
+      .send({ from: accounts[0], gas: "1000000" });
     // funds = await instance.methods.show().call();
     // setFunds(funds);
     // console.log(funds);
