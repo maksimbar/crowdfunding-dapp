@@ -37,6 +37,7 @@ const Home = () => {
       async function getResult() {
         const funds = await instance.methods.getCampaigns().call();
         const totalCompaigns = await instance.methods.totalCompaigns().call();
+
         setTotalCompaigns(totalCompaigns);
         console.log(funds);
         setFunds(funds);
@@ -53,13 +54,17 @@ const Home = () => {
   };
   return (
     <>
-      <S.Title>Compaigns ({totalCompaigns})</S.Title>
-      <S.CardBox>
-        {isLoading && <Loader />}
-        {[...funds].reverse().map((item, key) => (
-          <Card key={key} fundraiser={item} />
-        ))}
-      </S.CardBox>
+      <S.Title>Fundraisers ({totalCompaigns})</S.Title>
+      {totalCompaigns > 0 ? (
+        <S.CardBox>
+          {isLoading && <Loader />}
+          {[...funds].reverse().map((item, key) => (
+            <Card key={key} fundraiser={item} />
+          ))}
+        </S.CardBox>
+      ) : (
+        "Nothing here yet, feel free to start a new fundraising campaign!"
+      )}
     </>
   );
 };

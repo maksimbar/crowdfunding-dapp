@@ -9,18 +9,21 @@ contract Crowdfunding {
         string title;
         string description;
         uint256 target;
-        uint256 timeLimit;
+        uint endDate;
         uint256 collected;
         string image;
         address[] backers;
         uint256[] donations;
+        bool isCompleted;
     }
 
     mapping(uint256 => Campaign) public campaigns;
 
     uint256 public numberOfCampaigns = 0;
 
-    function createCampaign(address payable _owner, string memory _title, string memory _description, uint256 _target, uint256 _deadline, string memory _image) public returns (uint256) {
+    function createCampaign(address payable _owner,
+     string memory _title, string memory _description,
+     uint256 _target, uint _endDate, string memory _image) public returns (uint256) {
         Campaign storage campaign = campaigns[numberOfCampaigns];
 
         campaign.id = numberOfCampaigns;
@@ -28,13 +31,36 @@ contract Crowdfunding {
         campaign.title = _title;
         campaign.description = _description;
         campaign.target = _target;
-        campaign.timeLimit = _deadline;
+        campaign.endDate = block.timestamp + _endDate;
         campaign.collected = 0;
         campaign.image = _image;
+        campaign.isCompleted = false;
 
         numberOfCampaigns++;
 
         return numberOfCampaigns - 1;
+    }
+
+    function campaignExpired(uint256 _id, uint _timestamp) public {
+        Campaign storage campaign = campaigns[_id];
+
+          if(_timestamp >= campaign.endDate) {
+             campaign.isCompleted = true;
+        }
+    }
+
+    function timeUntilExpiration(uint256 _id, uint _timestamp) view public returns (uint256){
+        Campaign storage campaign = campaigns[_id];
+        
+        // if(campaign.isCompleted) {
+        //     return 0;
+        // }
+
+        return campaign.endDate - _timestamp;
+    }
+
+    function getBlockTimestamp() view public returns (uint256) {
+        return block.timestamp;
     }
 
     function totalCompaigns() view public returns (uint256) {

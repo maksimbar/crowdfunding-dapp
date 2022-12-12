@@ -18,6 +18,7 @@ export const InfoWrapper = styled.div`
 `;
 
 export const Form = styled.form`
+  position: relative;
   width: 100%;
   box-sizing: border-box;
   /* grid-column: span 2; */
@@ -256,4 +257,14 @@ export const Button = styled.button`
     cursor: not-allowed;
     opacity: 0.7;
   }
+`;
+
+export const CompletionWarning = styled.div`
+  grid-column: span 4;
+  padding: 2rem;
+  font-size: 1rem;
+  font-weight: 550;
+  border-radius: 10px;
+  background-color: #1e1f25;
+  text-align: center;
 `;

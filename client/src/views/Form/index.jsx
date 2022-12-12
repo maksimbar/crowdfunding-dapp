@@ -21,7 +21,7 @@ const NewFundraiser = () => {
     title: "",
     description: "",
     target: "",
-    timeLimit: "",
+    endDate: "",
     image: "",
   });
 
@@ -56,6 +56,13 @@ const NewFundraiser = () => {
     }
   };
 
+  const dateInSecs = Math.floor(new Date().getTime() / 1000);
+  console.log(dateInSecs);
+
+  function daysToSeconds(days) {
+    return Math.round(days * 24 * 60 * 60);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -66,6 +73,7 @@ const NewFundraiser = () => {
       const web3 = new Web3(provider);
       const networkId = await web3.eth.net.getId();
       const deployedNetwork = CrowdfundingContract.networks[networkId];
+
       const accounts = await web3.eth.getAccounts();
 
       const instance = new web3.eth.Contract(
@@ -78,10 +86,10 @@ const NewFundraiser = () => {
           form.title,
           form.description,
           form.target,
-          form.timeLimit,
+          daysToSeconds(form.endDate),
           form.image
         )
-        .send({ from: accounts[0], gas: "1000000" });
+        .send({ from: accounts[0] });
 
       navigate("/home");
       notify("Compaign created successfully");
@@ -125,8 +133,8 @@ const NewFundraiser = () => {
               labelName="Days "
               placeholder="End Date"
               inputType="number"
-              value={form.timeLimit}
-              handleChange={(e) => handleFormFieldChange("timeLimit", e)}
+              value={form.endDate}
+              handleChange={(e) => handleFormFieldChange("endDate", e)}
             />
             <FormField
               labelName="Campaign image *"

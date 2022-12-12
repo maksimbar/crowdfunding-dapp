@@ -6,6 +6,7 @@ export const Wrapper = styled.div`
   border-radius: 10px;
   border: 3px solid transparent;
   min-width: 100%;
+  padding: 0.25rem;
   height: 100%;
   /* width: 100%; */
   transition: border-color 0.2s ease-in-out;
@@ -64,15 +65,16 @@ export const Details = styled.div`
 `;
 export const DetailsBlock = styled.div`
   padding: 0.5rem;
-  border-radius: 10px;
+  border-radius: 20px;
   /* background-color: red; */
   /* width: 100%; */
   /* height: 3rem; */
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  font-size: 0.75rem;
   /* flex-direction: column; */
-  background-color: #393b45;
+  background-color: #444954;
 `;
 
 export const Owner = styled.div`
@@ -82,6 +84,5 @@ export const Owner = styled.div`
 `;
 
 export const Tag = styled.span`
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.5rem;
 `;
