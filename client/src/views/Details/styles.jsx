@@ -1,24 +1,26 @@
 import styled from "styled-components";
+import { sharedPreferences } from "../../utils/theme";
 
 export const Wrapper = styled.div`
   width: 100%;
+  position: relative;
 `;
 
 export const InfoWrapper = styled.div`
   width: 100%;
-  /* background-color: red; */
   border-radius: 10px;
-  /* background-color: #1e1f25; */
-  /* display: flex; */
   display: grid;
-
-  grid-template-columns: 1fr 1fr 1fr;
-
-  /* grid-template-columns: 1fr 0.5fr; */
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
+  @media (max-width: ${sharedPreferences.breakpoints.sm}) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 export const Form = styled.form`
+  width: 100%;
+  box-sizing: border-box;
+  /* grid-column: span 2; */
   background-color: #1e1f25;
   /* background-color: red; */
   /* width: 100%; */
@@ -29,6 +31,9 @@ export const Form = styled.form`
   gap: 2rem;
   padding: 30px;
   border-radius: 10px;
+  @media (max-width: ${sharedPreferences.breakpoints.sm}) {
+    grid-column: span 4;
+  }
 `;
 
 export const FormHeading = styled.h3`
@@ -41,10 +46,11 @@ export const DonateInfo = styled.p`
   /* height: 4rem; */
   background-color: #101213;
   padding: 15px;
+  /* width: 100%; */
+  text-align: center;
   border-radius: 10px;
   font-size: 0.75rem;
   margin: 0;
-  /* width: 100%; */
   border: this solid grey;
 `;
 
@@ -55,6 +61,10 @@ export const Img = styled.img`
   /* padding: 30px; */
   height: 23rem;
   width: 100%;
+  object-fit: cover;
+  @media (max-width: ${sharedPreferences.breakpoints.sm}) {
+    grid-column: span 4;
+  }
 `;
 
 export const DynamicSpan = styled.span`
@@ -84,24 +94,39 @@ export const TitleContainer = styled.div`
 `;
 
 export const Story = styled.div`
-  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  grid-column: span 2;
   border-radius: 10px;
   background-color: #1e1f25;
   padding: 30px;
   /* width: 100%; */
+  @media (max-width: ${sharedPreferences.breakpoints.sm}) {
+    grid-column: span 4;
+  }
 `;
 
 export const Heading = styled.h4`
   margin: 0;
+  margin-bottom: 10px;
 `;
 
-export const Description = styled.p``;
+export const Description = styled.p`
+  margin: 0;
+`;
 
 export const Backers = styled.div`
-  grid-column: span 4;
+  grid-column: span 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   border-radius: 10px;
   background-color: #1e1f25;
   padding: 30px;
+  @media (max-width: ${sharedPreferences.breakpoints.sm}) {
+    grid-column: span 4;
+  }
 `;
 
 export const ProjectInfo = styled.div`
@@ -109,6 +134,9 @@ export const ProjectInfo = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
+  @media (max-width: ${sharedPreferences.breakpoints.sm}) {
+    grid-column: span 4;
+  }
 `;
 
 export const InfoBox = styled.div`
@@ -118,6 +146,9 @@ export const InfoBox = styled.div`
   border-radius: 10px;
   background-color: #1e1f25;
   gap: 1rem;
+  @media (max-width: ${sharedPreferences.breakpoints.sm}) {
+    grid-column: span 4;
+  }
 `;
 
 export const AuthorAddress = styled.span`
@@ -134,6 +165,7 @@ export const InfoVal = styled.span`
 export const BackedAmount = styled.span`
   color: #069954;
   font-weight: 600;
+  font-size: 0.75rem;
 `;
 
 export const NewDonation = styled.div`
@@ -152,8 +184,11 @@ export const InfoDetails = styled.span`
 export const FrontInfo = styled.div`
   grid-column: span 4;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
+  @media (max-width: ${sharedPreferences.breakpoints.sm}) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 export const Author = styled.div`
@@ -169,20 +204,40 @@ export const Table = styled.table`
   /* border: 1px solid #ddd; */
   text-align: left;
   border-collapse: collapse;
+  /* display: flex; */
+  /* gap: 100px; */
+`;
+
+export const BackersList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+export const TxBlock = styled.div`
+  display: flex;
+  gap: 0.5rem;
+`;
+
+export const CompaignDetails = styled.div`
+  grid-column: span 4;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  @media (max-width: ${sharedPreferences.breakpoints.sm}) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 export const Tr = styled.tr``;
 
-export const Th = styled.th`
-  padding: 15px;
-  border-bottom: 1px solid #4e4e4e;
-`;
-
-export const Td = styled.td`
-  padding: 20px;
-  text-align: left;
-  width: 100%;
-  border-bottom: 1px solid #3a3a3a;
+export const ListEl = styled.span`
+  margin: 0;
+  font-size: 0.8rem;
+  /* padding: 20px 20px 20px 0; */
+  /* text-align: right; */
+  /* width: 100%; */
+  /* border-bottom: 1px solid #3a3a3a; */
 `;
 
 export const Button = styled.button`

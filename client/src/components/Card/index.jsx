@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./styles.jsx";
 import { shortenAddress } from "../../utils/index.js";
+import { toWei } from "../../utils/index.js";
 
 const Card = ({ fundraiser }) => {
   const navigate = useNavigate();
@@ -23,11 +24,11 @@ const Card = ({ fundraiser }) => {
         <S.Details>
           <S.DetailsBlock>
             <S.Tag>
-              {fundraiser.amountCollected} / {fundraiser.target} ETH
+              {toWei(fundraiser.collected)} / {fundraiser.target} ETH
             </S.Tag>
           </S.DetailsBlock>
           <S.DetailsBlock>
-            <S.Tag>{fundraiser.deadline} days left</S.Tag>
+            <S.Tag>{fundraiser.timeLimit} days left</S.Tag>
           </S.DetailsBlock>
         </S.Details>
         <S.Owner>by {shortenAddress(fundraiser.owner)}</S.Owner>

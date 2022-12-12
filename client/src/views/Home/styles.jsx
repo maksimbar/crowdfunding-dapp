@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { sharedPreferences } from "../../utils/theme";
 
 export const Title = styled.h1`
   margin: 0;
@@ -6,13 +7,16 @@ export const Title = styled.h1`
 `;
 
 export const CardBox = styled.div`
-  border-radius: 20px;
-  /* min-height: 35rem; */
-  /* width: 100%; */
+  position: relative;
+  width: 100%;
   display: grid;
-  /* grid-template-columns: repeat(auto-fitminmax(250px, 1fr));
-  g */
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
-  /* background-color: #1e1f25; */
+
+  @media (max-width: ${sharedPreferences.breakpoints.md}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: ${sharedPreferences.breakpoints.sm}) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;

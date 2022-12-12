@@ -64,7 +64,7 @@ export const Details = styled.div`
 `;
 export const DetailsBlock = styled.div`
   padding: 0.5rem;
-  border-radius: 20px;
+  border-radius: 10px;
   /* background-color: red; */
   /* width: 100%; */
   /* height: 3rem; */

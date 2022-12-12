@@ -1,17 +1,18 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
+
 contract Crowdfunding {
     struct Campaign {
         uint256 id;
-        address owner;
+        address payable owner;
         string title;
         string description;
         uint256 target;
-        uint256 deadline;
-        uint256 amountCollected;
+        uint256 timeLimit;
+        uint256 collected;
         string image;
-        address[] donators;
+        address[] backers;
         uint256[] donations;
     }
 
@@ -19,18 +20,16 @@ contract Crowdfunding {
 
     uint256 public numberOfCampaigns = 0;
 
-    function createCampaign(address _owner, string memory _title, string memory _description, uint256 _target, uint256 _deadline, string memory _image) public returns (uint256) {
+    function createCampaign(address payable _owner, string memory _title, string memory _description, uint256 _target, uint256 _deadline, string memory _image) public returns (uint256) {
         Campaign storage campaign = campaigns[numberOfCampaigns];
-
-        require(campaign.deadline < block.timestamp, "The deadline should be a date in the future.");
 
         campaign.id = numberOfCampaigns;
         campaign.owner = _owner;
         campaign.title = _title;
         campaign.description = _description;
         campaign.target = _target;
-        campaign.deadline = _deadline;
-        campaign.amountCollected = 0;
+        campaign.timeLimit = _deadline;
+        campaign.collected = 0;
         campaign.image = _image;
 
         numberOfCampaigns++;
@@ -38,27 +37,25 @@ contract Crowdfunding {
         return numberOfCampaigns - 1;
     }
 
+    function totalCompaigns() view public returns (uint256) {
+        return numberOfCampaigns;
+    }
+
     function donateToCampaign(uint256 _id) public payable {
         uint256 amount = msg.value;
 
         Campaign storage campaign = campaigns[_id];
 
-        campaign.donators.push(msg.sender);
+        campaign.backers.push(msg.sender);
         campaign.donations.push(amount);
 
-        (bool sent,) = payable(campaign.owner).call{value: amount}("");
+        campaign.owner.transfer(amount);
 
-        if(sent) {
-            campaign.amountCollected = campaign.amountCollected + amount;
-        }
+        campaign.collected += amount;
     }
 
     function getDonators(uint256 _id) view public returns (address[] memory, uint256[] memory) {
-        return (campaigns[_id].donators, campaigns[_id].donations);
-    }
-
-    function getNumOfComaigns() view public returns (uint256) {
-        return numberOfCampaigns;
+        return (campaigns[_id].backers, campaigns[_id].donations);
     }
 
     function getCampaigns() public view returns (Campaign[] memory) {

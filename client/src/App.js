@@ -10,6 +10,7 @@ import GlobalStyle from "./globalStyles";
 import styled from "styled-components";
 import { sharedPreferences } from "./utils/theme";
 import Details from "./views/Details";
+import { ToastContainer } from "react-toastify";
 
 const Backdrop = styled.div`
   display: flex;
@@ -70,6 +71,7 @@ const App = () => {
         <Route path="/new" element={<NewFundraiser />} />
         <Route path="*" element={<Home to="/home" replace />} />
       </Routes>
+      <ToastContainer />
     </Backdrop>
   );
 };

@@ -5,6 +5,8 @@ import CrowdfundingContract from "../../contracts/Crowdfunding.json";
 import Web3 from "web3";
 import FormField from "../../components/FormField";
 import * as S from "./styles.jsx";
+import Loader from "../../components/Loader";
+import notify from "../../utils/Toast";
 
 const NewFundraiser = () => {
   const navigate = useNavigate();
@@ -13,12 +15,13 @@ const NewFundraiser = () => {
   const [contract, setContract] = useState(null);
   const [funds, setFunds] = useState();
   const [accounts, setAccounts] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
     name: "",
     title: "",
     description: "",
     target: "",
-    deadline: "",
+    timeLimit: "",
     image: "",
   });
 
@@ -56,35 +59,41 @@ const NewFundraiser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    navigate("/home");
-    const provider = await detectEthereumProvider();
-    const web3 = new Web3(provider);
-    const networkId = await web3.eth.net.getId();
-    const deployedNetwork = CrowdfundingContract.networks[networkId];
-    const accounts = await web3.eth.getAccounts();
+    setIsLoading(true);
 
-    const instance = new web3.eth.Contract(
-      CrowdfundingContract.abi,
-      deployedNetwork.address
-    );
-    await contract.methods
-      .createCampaign(
-        accounts[0],
-        form.title,
-        form.description,
-        form.target,
-        form.deadline,
-        form.image
-      )
-      .send({ from: accounts[0], gas: "1000000" });
-    // funds = await instance.methods.show().call();
-    // setFunds(funds);
-    // console.log(funds);
-    console.log("Successfully created fundraiser");
+    try {
+      const provider = await detectEthereumProvider();
+      const web3 = new Web3(provider);
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = CrowdfundingContract.networks[networkId];
+      const accounts = await web3.eth.getAccounts();
+
+      const instance = new web3.eth.Contract(
+        CrowdfundingContract.abi,
+        deployedNetwork.address
+      );
+      await contract.methods
+        .createCampaign(
+          accounts[0],
+          form.title,
+          form.description,
+          form.target,
+          form.timeLimit,
+          form.image
+        )
+        .send({ from: accounts[0], gas: "1000000" });
+
+      navigate("/home");
+      notify("Compaign created successfully");
+    } catch (error) {
+      notify("Transaction rejected");
+    }
+    setIsLoading(false);
   };
   console.log(form);
   return (
     <S.Wrapper>
+      {isLoading && <Loader />}
       <S.Form onSubmit={handleSubmit}>
         <S.Container>
           <S.InputGroup>
@@ -116,8 +125,8 @@ const NewFundraiser = () => {
               labelName="Days "
               placeholder="End Date"
               inputType="number"
-              value={form.deadline}
-              handleChange={(e) => handleFormFieldChange("deadline", e)}
+              value={form.timeLimit}
+              handleChange={(e) => handleFormFieldChange("timeLimit", e)}
             />
             <FormField
               labelName="Campaign image *"

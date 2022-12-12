@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
+  position: relative;
   width: 100%;
   /* background-color: #1e1f25; */
   /* margin-top: 4rem; */
@@ -11,7 +12,7 @@ export const Container = styled.div`
   padding: 2rem;
   /* width: 100%; */
   display: flex;
-  border-radius: 2rem;
+  border-radius: 10px;
   flex-direction: column;
   gap: 2rem;
 `;

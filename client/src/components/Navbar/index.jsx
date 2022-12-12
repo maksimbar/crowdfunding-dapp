@@ -38,11 +38,12 @@ const Navbar = ({ account }) => {
           </S.Link>
         </S.NavItem>
       </S.Ul>
-      <S.Container>
-        <S.Logo src={metamasklogo} />
-        {/* {address} */}
-        <S.Address>{shortenAddress(address)}</S.Address>
-      </S.Container>
+      {address && (
+        <S.Container>
+          <S.Logo src={metamasklogo} />
+          <S.Address>{shortenAddress(address)}</S.Address>
+        </S.Container>
+      )}
     </S.Nav>
   );
 };

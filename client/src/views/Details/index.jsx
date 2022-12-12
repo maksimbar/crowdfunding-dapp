@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import FormField from "../../components/FormField/index.jsx";
+import FormField from "../../components/FormField";
 import detectEthereumProvider from "@metamask/detect-provider";
 import CrowdfundingContract from "../../contracts/Crowdfunding.json";
 import Web3 from "web3";
 import * as S from "./styles.jsx";
+import { toWei } from "../../utils";
+import Loader from "../../components/Loader";
+import notify from "../../utils/Toast";
+import { shortenAddress } from "../../utils";
 
 const Details = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
+  const [isLoading, setIsLoading] = useState(false);
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
   const [funds, setFunds] = useState();
@@ -26,25 +30,15 @@ const Details = () => {
     init();
   }, []);
 
-  // const ChangeButtonStatus = () => {
-  //   if(!form.amount)
-  // }
-
   const countBackers = () => {
-    return new Set(location.state.donators).size;
+    return new Set(location.state.backers).size;
   };
 
-  const backers = location.state.donations.map((value, index) => {
-    const linkContent = location.state.donators[index];
+  const backers = [...new Set(location.state.backers)].map((value, index) => {
     return (
-      <S.Table>
-        <S.Tr>
-          <S.Td>
-            <S.BackedAmount>+{value} ETH</S.BackedAmount>
-          </S.Td>
-          <S.Td>{linkContent}</S.Td>
-        </S.Tr>
-      </S.Table>
+      <S.TxBlock>
+        <S.ListEl>{value}</S.ListEl>
+      </S.TxBlock>
     );
   });
 
@@ -71,31 +65,35 @@ const Details = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    try {
+      const provider = await detectEthereumProvider();
+      const web3 = new Web3(provider);
+      const networkId = await web3.eth.net.getId();
+      const deployedNetwork = CrowdfundingContract.networks[networkId];
+      const accounts = await web3.eth.getAccounts();
 
-    navigate("/home");
+      const instance = new web3.eth.Contract(
+        CrowdfundingContract.abi,
+        deployedNetwork.address
+      );
 
-    const provider = await detectEthereumProvider();
-    const web3 = new Web3(provider);
-    const networkId = await web3.eth.net.getId();
-    const deployedNetwork = CrowdfundingContract.networks[networkId];
-    const accounts = await web3.eth.getAccounts();
+      const donation = web3.utils.toWei(form.amount, "ether");
 
-    const instance = new web3.eth.Contract(
-      CrowdfundingContract.abi,
-      deployedNetwork.address
-    );
+      await contract.methods
+        .donateToCampaign(location.state.id)
+        .send({ value: donation, from: accounts[0] });
 
-    await contract.methods
-      .donateToCampaign(location.state.id)
-      .send({ value: form.amount, from: accounts[0] });
-
-    // funds = await instance.methods.show().call();
-    // setFunds(funds);
-    // console.log(funds);
-    console.log("Successfully created fundraiser");
+      navigate("/home");
+      notify("Successful transaction");
+    } catch (error) {
+      notify("Transaction rejected");
+    }
+    setIsLoading(false);
   };
   return (
     <S.Wrapper>
+      {isLoading && <Loader />}
       <S.TitleContainer>
         <S.Title>{location.state.title}</S.Title>
       </S.TitleContainer>
@@ -113,7 +111,7 @@ const Details = () => {
             <S.DonateInfo>
               GoFundMe has a 0% platform fee for organizers.
             </S.DonateInfo>
-            <S.Button disabled={!form.amount}>Pay</S.Button>
+            <S.Button disabled={!form.amount}>Contribute</S.Button>
           </S.Form>
         </S.FrontInfo>
         <S.ProjectInfo>
@@ -123,7 +121,7 @@ const Details = () => {
             <S.InfoDetails>Helped</S.InfoDetails>
           </S.InfoBox>
           <S.InfoBox>
-            <S.InfoVal>ETH {location.state.amountCollected}</S.InfoVal>
+            <S.InfoVal>ETH {toWei(location.state.collected)}</S.InfoVal>
             <S.InfoContext>raised</S.InfoContext>
             <S.InfoDetails>Total so far</S.InfoDetails>
           </S.InfoBox>
@@ -137,20 +135,20 @@ const Details = () => {
           This foundraiser compaign was started by{" "}
           <S.AuthorAddress>{location.state.owner}</S.AuthorAddress>
         </S.Author>
-        <S.Story>
-          <S.Heading>Story</S.Heading>
-          <S.Description>{location.state.description}</S.Description>
-        </S.Story>
-        <S.Backers>
-          <S.Heading>Backers</S.Heading>
-          {location.state.donations.length ? (
-            backers
-          ) : (
-            <S.Description>
-              Nothing here yet. Be the first to fund this compaign!
-            </S.Description>
-          )}
-        </S.Backers>
+        <S.CompaignDetails>
+          <S.Story>
+            <S.Heading>Story</S.Heading>
+            <S.Description>{location.state.description}</S.Description>
+          </S.Story>
+          <S.Backers>
+            <S.Heading>Backers</S.Heading>
+            {location.state.donations.length ? (
+              <S.BackersList>{backers}</S.BackersList>
+            ) : (
+              <S.Description>Be the first to fund this compaign!</S.Description>
+            )}
+          </S.Backers>
+        </S.CompaignDetails>
       </S.InfoWrapper>
     </S.Wrapper>
   );
