@@ -56,7 +56,7 @@ const NewFundraiser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // navigate("/home");
+    navigate("/home");
     const provider = await detectEthereumProvider();
     const web3 = new Web3(provider);
     const networkId = await web3.eth.net.getId();

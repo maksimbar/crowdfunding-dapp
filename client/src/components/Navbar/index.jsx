@@ -37,11 +37,6 @@ const Navbar = ({ account }) => {
             <S.Icon className="fa-solid fa-plus fa-xl" />
           </S.Link>
         </S.NavItem>
-        <S.NavItem>
-          <S.Link to="quit">
-            <S.Icon className="fa-solid fa-right-from-bracket fa-xl" />
-          </S.Link>
-        </S.NavItem>
       </S.Ul>
       <S.Container>
         <S.Logo src={metamasklogo} />

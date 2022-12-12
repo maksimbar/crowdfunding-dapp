@@ -16,7 +16,7 @@ export const Input = styled.input`
   color: #cdced0;
   padding: 10px;
   height: 1.5rem;
-  border-radius: 20px;
+  border-radius: 10px;
   background-color: #101213;
   /* border: thin solid #475569; */
   border: none;

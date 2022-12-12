@@ -2,21 +2,26 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   cursor: pointer;
-  background-color: #2f333c;
-  border-radius: 20px;
+  background-color: #1e1f25;
+  border-radius: 10px;
   border: 3px solid transparent;
-  /* width: 18rem; */
+  min-width: 100%;
+  height: 100%;
+  /* width: 100%; */
   transition: border-color 0.2s ease-in-out;
   &:hover {
-    border-color: #3c54d0;
+    border-color: #393b45;
   }
 `;
 
 export const Content = styled.div`
+  /* background-color: red; */
   align-items: center;
   padding: 1rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  /* height: 100%; */
   gap: 1rem;
 `;
 
@@ -24,7 +29,7 @@ export const Picture = styled.img`
   width: 100%;
   height: 10rem;
   object-fit: cover;
-  border-radius: 20px;
+  border-radius: 10px;
 `;
 
 export const Title = styled.h3`
@@ -67,7 +72,7 @@ export const DetailsBlock = styled.div`
   align-items: center;
   gap: 0.25rem;
   /* flex-direction: column; */
-  background-color: #444954;
+  background-color: #393b45;
 `;
 
 export const Owner = styled.div`
@@ -78,4 +83,5 @@ export const Owner = styled.div`
 
 export const Tag = styled.span`
   font-size: 0.75rem;
+  font-weight: 600;
 `;

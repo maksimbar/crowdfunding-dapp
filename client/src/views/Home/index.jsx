@@ -6,6 +6,7 @@ import * as S from "./styles.jsx";
 
 const Home = () => {
   const [funds, setFunds] = useState([]);
+  const [totalCompaigns, setTotalCompaigns] = useState(null);
   const [contract, setContract] = useState(null);
   const [accounts, setAccounts] = useState(null);
   const [web3, setWeb3] = useState(null);
@@ -31,6 +32,8 @@ const Home = () => {
 
       async function getResult() {
         const funds = await instance.methods.getCampaigns().call();
+        const totalCompaigns = await instance.methods.getNumOfComaigns().call();
+        setTotalCompaigns(totalCompaigns);
         console.log(funds);
         setFunds(funds);
       }
@@ -44,9 +47,9 @@ const Home = () => {
   };
   return (
     <>
-      <S.Title>Compaigns</S.Title>
+      <S.Title>Compaigns ({totalCompaigns})</S.Title>
       <S.CardBox>
-        {funds.map((item, key) => (
+        {[...funds].reverse().map((item, key) => (
           <Card key={key} fundraiser={item} />
         ))}
       </S.CardBox>
