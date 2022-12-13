@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FormField from "../../components/FormField";
 import detectEthereumProvider from "@metamask/detect-provider";
-import CrowdfundingContract from "../../contracts/Crowdfunding.json";
+import CrowdfundingContract from "../../contracts/Campaign.json";
 import Web3 from "web3";
 import * as S from "./styles.jsx";
 import { toWei } from "../../utils";
 import Loader from "../../components/Loader";
 import notify from "../../utils/Toast";
 import { toDays } from "../../utils";
-import Banner from "../../components/Banner";
+import { sleep } from "../../utils";
 
 const Details = () => {
   const location = useLocation();
@@ -26,31 +26,30 @@ const Details = () => {
     amount: "",
   });
 
+  const [title, setTitle] = useState(null);
+  const [url, setUrl] = useState(null);
+  const [description, setDescription] = useState(null);
+  const [collected, setCollected] = useState(null);
+  const [donations, setDonations] = useState(null);
+  const [owner, setOwner] = useState(null);
+  const [backers, setBackers] = useState(null);
+  const [isCompleted, setIsCompleted] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
   const handleFormFieldChange = (fieldName, e) => {
     setForm({ ...form, [fieldName]: e.target.value });
   };
 
   const dateInSecs = Math.floor(new Date().getTime() / 1000);
-  console.log(dateInSecs);
 
   useEffect(() => {
     init();
   }, []);
 
-  const countBackers = () => {
-    return new Set(location.state.backers).size;
-  };
-
-  const backers = [...new Set(location.state.backers)].map((value, index) => {
-    return (
-      <S.TxBlock>
-        <S.ListEl>{value}</S.ListEl>
-      </S.TxBlock>
-    );
-  });
-
   const init = async () => {
     try {
+      setIsLoading(true);
+
       const web3 = new Web3(Web3.givenProvider || "http://localhost:7545");
       const networkId = await web3.eth.net.getId();
       const accounts = await web3.eth.getAccounts();
@@ -58,32 +57,77 @@ const Details = () => {
       const deployedNetwork = CrowdfundingContract.networks[networkId];
       const instance = new web3.eth.Contract(
         CrowdfundingContract.abi,
-        deployedNetwork && deployedNetwork.address
+        location.state
       );
 
-      // const timeLeft = await instance.methods
-      //   .timeUntilExpiration(location.state.id, dateInSecs)
-      //   .call();
+      const endDate = await instance.methods.endDate().call();
+      const title = await instance.methods.title().call();
+      const url = await instance.methods.url().call();
+      const description = await instance.methods.description().call();
+      const collected = await instance.methods.collected().call();
+      const donations = await instance.methods.getDonations().call();
+      const owner = await instance.methods.owner().call();
+      const backers = await instance.methods.getBackers().call();
+      const isCompleted = await instance.methods.isCompleted().call();
 
-      // await instance.methods
-      //   .campaignExpired(location.state.id, dateInSecs)
-      //   .call();
-
-      // const instance2 = new web3.eth.Contract(
-      //   CrowdfundingContract.abi,
-      //   location.state
-      // );
-
-      setTimeLeft(toDays(timeLeft));
+      setAddress(accounts[0]);
+      setEndDate(endDate);
+      setTitle(title);
+      setUrl(url);
+      setDescription(description);
+      setCollected(toWei(collected));
+      setDonations(donations.length);
+      setOwner(owner);
+      setBackers(backers);
+      setTimeLeft(toDays(endDate - dateInSecs));
       setWeb3(web3);
       setContract(instance);
       setAccounts(accounts);
+      setIsCompleted(isCompleted);
+
+      if (endDate < dateInSecs && !isCompleted) {
+        await instance.methods.claimTimeout().send({ from: accounts[0] });
+      }
+      // await sleep(700);
+      setIsLoading(false);
     } catch (error) {
       alert(
         `Failed to load web3, accounts, or contract. Check console for details.`
       );
       console.error(error);
     }
+  };
+
+  const uniqueBackers = [...new Set(backers)].map((value, index) => {
+    return (
+      <S.TxBlock>
+        <S.ListEl>{value}</S.ListEl>
+      </S.TxBlock>
+    );
+  });
+
+  console.log(isCompleted);
+
+  const filterPartiticipators = () => {
+    if (address === owner && isCompleted) {
+      return {
+        isAllowed: true,
+        msg: "Congratulations, your campaign has been successfully completed.",
+      };
+    } else if (isCompleted) {
+      return {
+        isAllowed: true,
+        msg: "This campaign has been successfully completed. You can longer particicpate in it.",
+      };
+    } else if (address === owner) {
+      return {
+        isAllowed: true,
+        msg: "You cannot partitcipate in your own campaigns.",
+      };
+    } else
+      return {
+        isAllowed: false,
+      };
   };
 
   const handleSubmit = async (e) => {
@@ -98,13 +142,13 @@ const Details = () => {
 
       const instance = new web3.eth.Contract(
         CrowdfundingContract.abi,
-        deployedNetwork.address
+        location.state
       );
 
       const donation = web3.utils.toWei(form.amount, "ether");
 
       await contract.methods
-        .donateToCampaign(location.state.id)
+        .donateToCampaign()
         .send({ value: donation, from: accounts[0] });
 
       navigate("/home");
@@ -115,27 +159,34 @@ const Details = () => {
     setIsLoading(false);
   };
 
-  // console.log(address);
-  // console.log(location.state.isCompleted);
   return (
     <S.Wrapper>
       {isLoading && <Loader />}
       <S.TitleContainer>
-        <S.Title>{location.state.title}</S.Title>
+        <S.Title>{title}</S.Title>
       </S.TitleContainer>
       <S.InfoWrapper>
-        {location.state.isCompleted && (
+        {filterPartiticipators().isAllowed && (
           <S.CompletionWarning>
-            This campaign has been successfully completed. You can longer
-            particicpate in it.
+            {filterPartiticipators().msg}
           </S.CompletionWarning>
         )}
         <S.FrontInfo>
-          <S.Img src={location.state.image} />
-          <S.Form onSubmit={handleSubmit}>
-            {address == location.state.owner && (
-              <Banner msg={"You cannot partitcipate in your own campaigns"} />
-            )}
+          <S.Img
+            style={{
+              gridColumn: `${
+                filterPartiticipators().isAllowed ? "span 4" : "span 2"
+              }`,
+            }}
+            src={url}
+          />
+
+          <S.Form
+            style={{
+              display: `${filterPartiticipators().isAllowed ? "none" : "flex"}`,
+            }}
+            onSubmit={handleSubmit}
+          >
             <S.FormHeading>Fund this compaign</S.FormHeading>
             <FormField
               id="outlined-bare"
@@ -156,29 +207,29 @@ const Details = () => {
             <S.InfoDetails>Left</S.InfoDetails>
           </S.InfoBox>
           <S.InfoBox>
-            <S.InfoVal>ETH {toWei(location.state.collected)}</S.InfoVal>
+            <S.InfoVal>ETH {collected}</S.InfoVal>
             <S.InfoContext>raised</S.InfoContext>
             <S.InfoDetails>Total so far</S.InfoDetails>
           </S.InfoBox>
           <S.InfoBox>
-            <S.InfoVal>{location.state.donations.length}</S.InfoVal>
+            <S.InfoVal>{donations}</S.InfoVal>
             <S.InfoContext>donations</S.InfoContext>
             <S.InfoDetails>Received</S.InfoDetails>
           </S.InfoBox>
         </S.ProjectInfo>
         <S.Author>
           This foundraiser compaign was started by{" "}
-          <S.AuthorAddress>{location.state.owner}</S.AuthorAddress>
+          <S.AuthorAddress>{owner}</S.AuthorAddress>
         </S.Author>
         <S.CompaignDetails>
           <S.Story>
             <S.Heading>Story</S.Heading>
-            <S.Description>{location.state.description}</S.Description>
+            <S.Description>{description}</S.Description>
           </S.Story>
           <S.Backers>
-            <S.Heading>Backers ({countBackers()})</S.Heading>
-            {location.state.donations.length ? (
-              <S.BackersList>{backers}</S.BackersList>
+            <S.Heading>Backers ({uniqueBackers.length})</S.Heading>
+            {donations ? (
+              <S.BackersList>{uniqueBackers}</S.BackersList>
             ) : (
               <S.Description>Be the first to fund this compaign!</S.Description>
             )}

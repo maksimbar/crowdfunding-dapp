@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import CrowdfundingContract from "../../contracts/Crowdfunding.json";
+import CrowdfundingContract from "../../contracts/Pool.json";
 import Web3 from "web3";
 import Card from "../../components/Card";
 import * as S from "./styles.jsx";
 import Loader from "../../components/Loader";
+import { sleep } from "../../utils";
 
 const Home = () => {
   const [funds, setFunds] = useState([]);
-  const [totalCompaigns, setTotalCompaigns] = useState(null);
+  const [totalCampaigns, setTotalCampaigns] = useState(null);
   const [contract, setContract] = useState(null);
   const [accounts, setAccounts] = useState(null);
   const [web3, setWeb3] = useState(null);
@@ -21,6 +22,7 @@ const Home = () => {
     try {
       setIsLoading(true);
 
+      await sleep(700);
       const web3 = new Web3("http://localhost:7545");
 
       const networkId = await web3.eth.net.getId();
@@ -28,22 +30,16 @@ const Home = () => {
       const deployedNetwork = CrowdfundingContract.networks[networkId];
       const instance = new web3.eth.Contract(
         CrowdfundingContract.abi,
-        deployedNetwork.address
+        deployedNetwork && deployedNetwork.address
       );
+
+      const funds = await instance.methods.getCampaigns().call();
+      const totalCampaigns = await instance.methods.campaignsCount().call();
 
       setContract(instance);
       setAccounts(accounts);
-
-      async function getResult() {
-        const funds = await instance.methods.getCampaigns().call();
-        const totalCompaigns = await instance.methods.totalCompaigns().call();
-
-        setTotalCompaigns(totalCompaigns);
-        console.log(funds);
-        setFunds(funds);
-      }
-      await getResult();
-
+      setTotalCampaigns(totalCampaigns);
+      setFunds(funds);
       setIsLoading(false);
     } catch (error) {
       console.log(
@@ -54,17 +50,16 @@ const Home = () => {
   };
   return (
     <>
-      <S.Title>Fundraisers ({totalCompaigns})</S.Title>
-      {totalCompaigns > 0 ? (
-        <S.CardBox>
-          {isLoading && <Loader />}
-          {[...funds].reverse().map((item, key) => (
-            <Card key={key} fundraiser={item} />
-          ))}
-        </S.CardBox>
-      ) : (
-        "Nothing here yet, feel free to start a new fundraising campaign!"
-      )}
+      <S.Title>Fundraisers ({totalCampaigns})</S.Title>
+      {/* {totalCompaigns < 0 ? ( */}
+      <S.CardBox>
+        {isLoading && <Loader />}
+        {[...funds].reverse().map((item, key) => (
+          <Card key={key} fundraiser={item} />
+        ))}
+      </S.CardBox>
+      {/* ) : ( "Nothing here yet, feel free to start a new fundraising campaign!"
+      )} */}
     </>
   );
 };

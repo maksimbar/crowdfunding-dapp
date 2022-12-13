@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import detectEthereumProvider from "@metamask/detect-provider";
-import CrowdfundingContract from "../../contracts/Crowdfunding.json";
+import CrowdfundingContract from "../../contracts/Pool.json";
 import Web3 from "web3";
 import FormField from "../../components/FormField";
 import * as S from "./styles.jsx";
@@ -78,8 +78,9 @@ const NewFundraiser = () => {
 
       const instance = new web3.eth.Contract(
         CrowdfundingContract.abi,
-        deployedNetwork.address
+        deployedNetwork && deployedNetwork.address
       );
+
       await contract.methods
         .createCampaign(
           accounts[0],

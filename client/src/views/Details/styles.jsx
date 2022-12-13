@@ -18,6 +18,7 @@ export const InfoWrapper = styled.div`
 `;
 
 export const Form = styled.form`
+  display: none;
   position: relative;
   width: 100%;
   box-sizing: border-box;
@@ -35,6 +36,10 @@ export const Form = styled.form`
   @media (max-width: ${sharedPreferences.breakpoints.sm}) {
     grid-column: span 4;
   }
+`;
+
+export const HiddenForm = styled(Form)`
+  display: none;
 `;
 
 export const FormHeading = styled.h3`
@@ -66,6 +71,10 @@ export const Img = styled.img`
   @media (max-width: ${sharedPreferences.breakpoints.sm}) {
     grid-column: span 4;
   }
+`;
+
+export const HiddenImg = styled(Img)`
+  grid-column: span 4;
 `;
 
 export const DynamicSpan = styled.span`

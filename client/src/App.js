@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route, NavLink } from "react-router-dom";
 import NewFundraiser from "./views/Form";
-import FactoryContract from "./contracts/Crowdfunding.json";
+import FactoryContract from "./contracts/Pool.json";
 import Home from "./views/Home";
 import getWeb3 from "./utils/getWeb3";
 import "./App.css";

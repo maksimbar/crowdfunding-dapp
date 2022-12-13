@@ -1,5 +1,5 @@
-const Crowdfunding = artifacts.require("./Crowdfunding.sol");
+const Pool = artifacts.require("./Pool.sol");
 
 module.exports = function (deployer) {
-  deployer.deploy(Crowdfunding);
+  deployer.deploy(Pool);
 };

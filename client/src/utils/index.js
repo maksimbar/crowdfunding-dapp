@@ -20,3 +20,5 @@ export const toDays = (seconds) => {
   var mDisplay = m > 0 ? m + (m == 1 ? " minute " : " minutes") : "";
   return dDisplay || hDisplay || mDisplay;
 };
+
+export const sleep = (m) => new Promise((r) => setTimeout(r, m));
