@@ -6,29 +6,19 @@ export const Nav = styled.nav`
   box-sizing: border-box;
   position: relative;
   background-color: #1e1f25;
-  /* position: relative; */
   border-radius: 10px;
   height: 4rem;
   width: 100%;
   padding: 1rem;
-  /* width: 5rem; */
   display: flex;
-  /* justify-content: center; */
   align-items: center;
-  /* padding: 0.25rem; */
 `;
 
 export const Ul = styled.ul`
   padding: 0;
   height: fit-content;
-  /* width: 100%; */
   border-radius: 10px;
   display: flex;
-  /* flex-direction: column; */
-  /* align-items: center; */
-  /* justify-content: center; */
-  /* margin: auto; */
-
   gap: 1rem;
   list-style: none;
 `;
@@ -43,7 +33,6 @@ export const Link = styled(NavLink)`
   align-items: center;
   margin: 0;
   padding: 1rem;
-  /* background-color: ${colors.primary}; */
   border-radius: 10px;
   text-decoration: none;
   transition: all 0.2s ease-in-out;

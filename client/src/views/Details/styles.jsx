@@ -22,10 +22,7 @@ export const Form = styled.form`
   position: relative;
   width: 100%;
   box-sizing: border-box;
-  /* grid-column: span 2; */
   background-color: #1e1f25;
-  /* background-color: red; */
-  /* width: 100%; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,10 +35,6 @@ export const Form = styled.form`
   }
 `;
 
-export const HiddenForm = styled(Form)`
-  display: none;
-`;
-
 export const FormHeading = styled.h3`
   text-align: center;
   color: grey;
@@ -49,10 +42,8 @@ export const FormHeading = styled.h3`
 `;
 
 export const DonateInfo = styled.p`
-  /* height: 4rem; */
   background-color: #101213;
   padding: 15px;
-  /* width: 100%; */
   text-align: center;
   border-radius: 10px;
   font-size: 0.75rem;
@@ -64,17 +55,12 @@ export const Img = styled.img`
   grid-column: span 2;
   border-radius: 10px;
   background-color: #1e1f25;
-  /* padding: 30px; */
   height: 23rem;
   width: 100%;
   object-fit: cover;
   @media (max-width: ${sharedPreferences.breakpoints.sm}) {
     grid-column: span 4;
   }
-`;
-
-export const HiddenImg = styled(Img)`
-  grid-column: span 4;
 `;
 
 export const DynamicSpan = styled.span`
@@ -111,7 +97,6 @@ export const Story = styled.div`
   border-radius: 10px;
   background-color: #1e1f25;
   padding: 30px;
-  /* width: 100%; */
   @media (max-width: ${sharedPreferences.breakpoints.sm}) {
     grid-column: span 4;
   }
@@ -211,11 +196,8 @@ export const Author = styled.div`
 export const Table = styled.table`
   border-color: white;
   width: 100%;
-  /* border: 1px solid #ddd; */
   text-align: left;
   border-collapse: collapse;
-  /* display: flex; */
-  /* gap: 100px; */
 `;
 
 export const BackersList = styled.div`
@@ -239,15 +221,9 @@ export const CompaignDetails = styled.div`
   }
 `;
 
-export const Tr = styled.tr``;
-
 export const ListEl = styled.span`
   margin: 0;
   font-size: 0.8rem;
-  /* padding: 20px 20px 20px 0; */
-  /* text-align: right; */
-  /* width: 100%; */
-  /* border-bottom: 1px solid #3a3a3a; */
 `;
 
 export const Button = styled.button`

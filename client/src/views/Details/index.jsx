@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
+import * as S from "./styles.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import FormField from "../../components/FormField";
-import detectEthereumProvider from "@metamask/detect-provider";
-import CrowdfundingContract from "../../contracts/Campaign.json";
+import CampaignContract from "../../contracts/Campaign.json";
 import Web3 from "web3";
-import * as S from "./styles.jsx";
 import { toWei } from "../../utils";
 import Loader from "../../components/Loader";
 import notify from "../../utils/Toast";
 import { toDays } from "../../utils";
-import { sleep } from "../../utils";
 
 const Details = () => {
   const location = useLocation();
@@ -17,11 +15,9 @@ const Details = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
-  const [funds, setFunds] = useState();
   const [timeLeft, setTimeLeft] = useState(null);
   const [accounts, setAccounts] = useState(null);
   const [address, setAddress] = useState(null);
-  const [num, setNum] = useState(null);
   const [form, setForm] = useState({
     amount: "",
   });
@@ -50,13 +46,11 @@ const Details = () => {
     try {
       setIsLoading(true);
 
-      const web3 = new Web3(Web3.givenProvider || "http://localhost:7545");
-      const networkId = await web3.eth.net.getId();
+      const web3 = new Web3(Web3.givenProvider);
       const accounts = await web3.eth.getAccounts();
       setAddress(accounts[0]);
-      const deployedNetwork = CrowdfundingContract.networks[networkId];
       const instance = new web3.eth.Contract(
-        CrowdfundingContract.abi,
+        CampaignContract.abi,
         location.state
       );
 
@@ -88,7 +82,7 @@ const Details = () => {
       if (endDate < dateInSecs && !isCompleted) {
         await instance.methods.claimTimeout().send({ from: accounts[0] });
       }
-      // await sleep(700);
+
       setIsLoading(false);
     } catch (error) {
       alert(
@@ -133,18 +127,8 @@ const Details = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
     try {
-      const provider = await detectEthereumProvider();
-      const web3 = new Web3(provider);
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = CrowdfundingContract.networks[networkId];
-      const accounts = await web3.eth.getAccounts();
-
-      const instance = new web3.eth.Contract(
-        CrowdfundingContract.abi,
-        location.state
-      );
-
       const donation = web3.utils.toWei(form.amount, "ether");
 
       await contract.methods

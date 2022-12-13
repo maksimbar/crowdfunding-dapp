@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import detectEthereumProvider from "@metamask/detect-provider";
-import CrowdfundingContract from "../../contracts/Pool.json";
+import PoolContract from "../../contracts/Pool.json";
 import Web3 from "web3";
 import FormField from "../../components/FormField";
 import * as S from "./styles.jsx";
@@ -12,7 +12,7 @@ const NewFundraiser = () => {
   const navigate = useNavigate();
 
   const [web3, setWeb3] = useState(null);
-  const [contract, setContract] = useState(null);
+  const [instance, setInstance] = useState(null);
   const [funds, setFunds] = useState();
   const [accounts, setAccounts] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,13 +39,13 @@ const NewFundraiser = () => {
       const web3 = new Web3(provider);
       const networkId = await web3.eth.net.getId();
       const accounts = await web3.eth.getAccounts();
-      const deployedNetwork = CrowdfundingContract.networks[networkId];
+      const deployedNetwork = PoolContract.networks[networkId];
       const instance = new web3.eth.Contract(
-        CrowdfundingContract.abi,
+        PoolContract.abi,
         deployedNetwork && deployedNetwork.address
       );
       setWeb3(web3);
-      setContract(instance);
+      setInstance(instance);
       setAccounts(accounts);
       console.log(accounts);
     } catch (error) {
@@ -55,9 +55,6 @@ const NewFundraiser = () => {
       console.error(error);
     }
   };
-
-  const dateInSecs = Math.floor(new Date().getTime() / 1000);
-  console.log(dateInSecs);
 
   function daysToSeconds(days) {
     return Math.round(days * 24 * 60 * 60);
@@ -69,19 +66,7 @@ const NewFundraiser = () => {
     setIsLoading(true);
 
     try {
-      const provider = await detectEthereumProvider();
-      const web3 = new Web3(provider);
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = CrowdfundingContract.networks[networkId];
-
-      const accounts = await web3.eth.getAccounts();
-
-      const instance = new web3.eth.Contract(
-        CrowdfundingContract.abi,
-        deployedNetwork && deployedNetwork.address
-      );
-
-      await contract.methods
+      await instance.methods
         .createCampaign(
           accounts[0],
           form.title,

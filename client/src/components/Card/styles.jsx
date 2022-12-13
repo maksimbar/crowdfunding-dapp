@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
+  box-sizing: border-box;
   cursor: pointer;
   background-color: #1e1f25;
   border-radius: 10px;
@@ -8,7 +9,6 @@ export const Wrapper = styled.div`
   min-width: 100%;
   padding: 0.25rem;
   height: 100%;
-  /* width: 100%; */
   transition: border-color 0.2s ease-in-out;
   &:hover {
     border-color: #393b45;
@@ -16,13 +16,11 @@ export const Wrapper = styled.div`
 `;
 
 export const Content = styled.div`
-  /* background-color: red; */
   align-items: center;
   padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* height: 100%; */
   gap: 1rem;
 `;
 
@@ -57,23 +55,16 @@ export const Due = styled.span`
 
 export const Details = styled.div`
   display: flex;
-  /* gap: 0.5rem; */
-  /* flex-direction: column; */
-  /* justify-content: space-between; */
   gap: 1rem;
   margin: auto;
 `;
 export const DetailsBlock = styled.div`
   padding: 0.5rem;
   border-radius: 20px;
-  /* background-color: red; */
-  /* width: 100%; */
-  /* height: 3rem; */
   display: flex;
   align-items: center;
   gap: 0.25rem;
   font-size: 0.75rem;
-  /* flex-direction: column; */
   background-color: #444954;
 `;
 

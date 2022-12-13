@@ -19,7 +19,6 @@ export const Input = styled.input`
   height: 3rem;
   border-radius: 10px;
   background-color: #101213;
-  /* border: thin solid #475569; */
   border: none;
 `;
 
@@ -29,6 +28,5 @@ export const Textarea = styled.textarea`
   padding: 10px;
   border-radius: 10px;
   background-color: #101213;
-  /* border: thin solid #475569; */
   border: none;
 `;
