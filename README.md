@@ -4,8 +4,16 @@ Decentralized crowdfunding application based on Ethereum Blockchain
 
 ## UI Demo
 
+### Homepage
+
 ![_home](/client/public/assets/home.png)
+
+### Fundraiser details
+
 ![_details](/client/public/assets/details.png)
+
+### New fundraiser
+
 ![_new](/client/public/assets/new.png)
 
 ## Setting up the contracts
