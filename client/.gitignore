@@ -6,4 +6,5 @@ package-lock.json
 /build
 
 # contracts
+src/contracts/*
 !src/contracts/.gitkeep
