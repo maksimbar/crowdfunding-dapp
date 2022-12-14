@@ -1,21 +1,22 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.9;
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity >=0.7.0 <0.9.0;
 
 
 contract Campaign {
 
-        address payable public owner;
-        string public title;
-        string public description;
-        uint256 public target;
-        uint public endDate;
-        uint256 public collected;
-        string public url;
-        address[] public backers;
-        uint256[] public donations;
-        bool public isCompleted = false;
+    address payable public owner;
+    string public title;
+    string public description;
+    uint256 public target;
+    uint public endDate;
+    uint256 public collected;
+    string public url;
+    address[] public backers;
+    uint256[] public donations;
+    bool public isCompleted = false;
 
-    constructor (address payable _owner, string memory _title, string memory _description, uint256 _target, uint _endDate, string memory _url) public {
+    constructor (address payable _owner, string memory _title, string memory _description, uint256 _target, uint _endDate, string memory _url) {
         owner = _owner;
         title = _title;
         description = _description;

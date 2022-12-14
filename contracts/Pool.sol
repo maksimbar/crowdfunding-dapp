@@ -1,5 +1,6 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.9;
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity >=0.7.0 <0.9.0;
 
 import "./Campaign.sol";
 
@@ -15,15 +16,13 @@ contract Pool {
         _campaigns.push(campaign);
     }
 
-    function getCampaigns () public view returns (Campaign[] memory allCampaigns) {    
-        uint256 size = campaignsCount() ;
-        allCampaigns = new Campaign[](size);
+    function getAllCampaigns () public view returns (Campaign[] memory allCampaigns) {    
+        allCampaigns = new Campaign[](_campaigns.length);
 
-        for (uint256 i = 0; i < size; i++) {
+        for (uint256 i = 0; i < _campaigns.length; i++) {
             allCampaigns[i] = _campaigns[i];
         }
 
         return allCampaigns;    
     }
-
 }
