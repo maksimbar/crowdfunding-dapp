@@ -16,7 +16,7 @@ Compile contracts
 truffle compile
 ```
 
-Migrated compiled contracts
+Migrate compiled contracts
 
 ```console
 truffle migrate --reset
