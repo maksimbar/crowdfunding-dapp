@@ -18,8 +18,7 @@ const Home = () => {
     try {
       setIsLoading(true);
 
-      const web3 = new Web3("http://localhost:7545");
-
+      const web3 = new Web3(Web3.givenProvider);
       const networkId = await web3.eth.net.getId();
       const deployedNetwork = PoolContract.networks[networkId];
       const instance = new web3.eth.Contract(
@@ -27,7 +26,7 @@ const Home = () => {
         deployedNetwork && deployedNetwork.address
       );
 
-      const campaigns = await instance.methods.getCampaigns().call();
+      const campaigns = await instance.methods.getAllCampaigns().call();
       const totalCampaigns = await instance.methods.campaignsCount().call();
 
       setTotalCampaigns(totalCampaigns);
@@ -41,8 +40,8 @@ const Home = () => {
     }
   };
   return (
-    <>
-      <S.Title>Fundraisers ({totalCampaigns})</S.Title>
+    <S.Wrapper>
+      <S.Title>All Fundraisers ({totalCampaigns})</S.Title>
       {totalCampaigns > 0 ? (
         <S.CardBox>
           {isLoading && <Loader />}
@@ -53,7 +52,7 @@ const Home = () => {
       ) : (
         "Nothing here yet, feel free to start a new fundraising campaign!"
       )}
-    </>
+    </S.Wrapper>
   );
 };
 

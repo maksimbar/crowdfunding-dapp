@@ -20,6 +20,7 @@ export const Input = styled.input`
   border-radius: 10px;
   background-color: #101213;
   border: none;
+  outline: none;
 `;
 
 export const Textarea = styled.textarea`
@@ -29,4 +30,5 @@ export const Textarea = styled.textarea`
   border-radius: 10px;
   background-color: #101213;
   border: none;
+  outline: none;
 `;

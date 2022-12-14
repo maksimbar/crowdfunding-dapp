@@ -8,6 +8,7 @@ import { toWei } from "../../utils";
 import Loader from "../../components/Loader";
 import notify from "../../utils/Toast";
 import { toDays } from "../../utils";
+import { shortenAddress } from "../../utils";
 
 const Details = () => {
   const location = useLocation();
@@ -31,6 +32,7 @@ const Details = () => {
   const [backers, setBackers] = useState(null);
   const [isCompleted, setIsCompleted] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [target, setTarget] = useState(null);
 
   const handleFormFieldChange = (fieldName, e) => {
     setForm({ ...form, [fieldName]: e.target.value });
@@ -63,6 +65,7 @@ const Details = () => {
       const owner = await instance.methods.owner().call();
       const backers = await instance.methods.getBackers().call();
       const isCompleted = await instance.methods.isCompleted().call();
+      const target = await instance.methods.target().call();
 
       setAddress(accounts[0]);
       setEndDate(endDate);
@@ -78,6 +81,7 @@ const Details = () => {
       setContract(instance);
       setAccounts(accounts);
       setIsCompleted(isCompleted);
+      setTarget(toWei(target));
 
       if (endDate < dateInSecs && !isCompleted) {
         await instance.methods.claimTimeout().send({ from: accounts[0] });
@@ -95,12 +99,10 @@ const Details = () => {
   const uniqueBackers = [...new Set(backers)].map((value, index) => {
     return (
       <S.TxBlock>
-        <S.ListEl>{value}</S.ListEl>
+        <S.ListEl>{shortenAddress(value, 10, 27)}</S.ListEl>
       </S.TxBlock>
     );
   });
-
-  console.log(isCompleted);
 
   const filterPartiticipators = () => {
     if (address === owner && isCompleted) {
@@ -174,12 +176,12 @@ const Details = () => {
             <S.FormHeading>Fund this compaign</S.FormHeading>
             <FormField
               id="outlined-bare"
-              placeholder="ETH 0.5"
+              placeholder="0.5"
               value={form.amount}
               handleChange={(e) => handleFormFieldChange("amount", e)}
             />
             <S.DonateInfo>
-              GoFundMe has a 0% platform fee for organizers.
+              We have a 0% platform fee for organizers.
             </S.DonateInfo>
             <S.Button disabled={!form.amount}>Contribute</S.Button>
           </S.Form>
@@ -191,7 +193,9 @@ const Details = () => {
             <S.InfoDetails>Left</S.InfoDetails>
           </S.InfoBox>
           <S.InfoBox>
-            <S.InfoVal>ETH {collected}</S.InfoVal>
+            <S.InfoVal>
+              <i className="fa-brands fa-ethereum" /> {collected} / {target}
+            </S.InfoVal>
             <S.InfoContext>raised</S.InfoContext>
             <S.InfoDetails>Total so far</S.InfoDetails>
           </S.InfoBox>
@@ -202,7 +206,7 @@ const Details = () => {
           </S.InfoBox>
         </S.ProjectInfo>
         <S.Author>
-          This foundraiser compaign was started by{" "}
+          This fundraiser campaign was started by{" "}
           <S.AuthorAddress>{owner}</S.AuthorAddress>
         </S.Author>
         <S.CompaignDetails>
@@ -215,7 +219,7 @@ const Details = () => {
             {donations ? (
               <S.BackersList>{uniqueBackers}</S.BackersList>
             ) : (
-              <S.Description>Be the first to fund this compaign!</S.Description>
+              <S.Description>Be the first to fund this campaign!</S.Description>
             )}
           </S.Backers>
         </S.CompaignDetails>

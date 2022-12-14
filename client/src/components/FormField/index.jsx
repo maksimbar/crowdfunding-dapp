@@ -23,7 +23,7 @@ const FormField = ({
         />
       ) : (
         <S.Input
-          reauired
+          required
           id={id}
           placeholder={placeholder}
           value={value}

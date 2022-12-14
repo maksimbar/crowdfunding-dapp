@@ -3,7 +3,13 @@ import { sharedPreferences } from "../../utils/theme";
 
 export const Title = styled.h1`
   margin: 0;
-  align-self: flex-start;
+`;
+
+export const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 `;
 
 export const CardBox = styled.div`

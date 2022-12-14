@@ -64,8 +64,11 @@ const Card = ({ fundraiser }) => {
         <S.Title>{title}</S.Title>
         <S.Description>{description}</S.Description>
         <S.Details>
-          <S.DetailsBlock>{collected} ETH raised</S.DetailsBlock>
-          <S.DetailsBlock>{donations} donations</S.DetailsBlock>
+          <S.DetailsBlock>
+            <i className="fa-brands fa-ethereum" />
+            {collected} raised
+          </S.DetailsBlock>
+          •<S.DetailsBlock>{donations} donations</S.DetailsBlock>
         </S.Details>
         <S.Owner>by {shortenAddress(owner)}</S.Owner>
       </S.Content>

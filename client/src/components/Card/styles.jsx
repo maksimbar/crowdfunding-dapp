@@ -7,11 +7,10 @@ export const Wrapper = styled.div`
   border-radius: 10px;
   border: 3px solid transparent;
   min-width: 100%;
-  padding: 0.25rem;
   height: 100%;
-  transition: border-color 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out;
   &:hover {
-    border-color: #393b45;
+    background: #282930;
   }
 `;
 
@@ -55,8 +54,10 @@ export const Due = styled.span`
 
 export const Details = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: €rem;
   margin: auto;
+  align-items: center;
+  justify-content: center;
 `;
 export const DetailsBlock = styled.div`
   padding: 0.5rem;
@@ -65,7 +66,8 @@ export const DetailsBlock = styled.div`
   align-items: center;
   gap: 0.25rem;
   font-size: 0.75rem;
-  background-color: #444954;
+  /* background-color: #444954; */
+  font-weight: 600;
 `;
 
 export const Owner = styled.div`

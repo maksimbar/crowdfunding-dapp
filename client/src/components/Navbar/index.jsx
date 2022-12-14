@@ -3,13 +3,14 @@ import * as S from "./styles.jsx";
 import metamasklogo from "../../metamask-logo.png";
 import Web3 from "web3";
 import { shortenAddress } from "../../utils/index.js";
+import getWeb3 from "../../utils/getWeb3.js";
 
 const Navbar = ({ account }) => {
   const [address, setAddress] = useState(null);
 
   useEffect(() => {
     init();
-  }, []);
+  }, [address]);
 
   const init = async () => {
     try {
@@ -39,11 +40,19 @@ const Navbar = ({ account }) => {
           </S.Link>
         </S.NavItem>
       </S.Ul>
-      {address && (
+      {address ? (
         <S.Container>
           <S.Logo src={metamasklogo} />
           <S.Address>{shortenAddress(address)}</S.Address>
         </S.Container>
+      ) : (
+        <S.Button
+          onClick={async () =>
+            await window.ethereum.request({ method: "eth_requestAccounts" })
+          }
+        >
+          Connect wallet
+        </S.Button>
       )}
     </S.Nav>
   );

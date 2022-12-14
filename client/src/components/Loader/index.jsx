@@ -5,7 +5,7 @@ import * as S from "./styles";
 const Loader = () => {
   return (
     <S.Backdrop>
-      <S.Spinner class="loader"></S.Spinner>
+      <S.Spinner></S.Spinner>
     </S.Backdrop>
   );
 };

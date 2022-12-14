@@ -1,7 +1,7 @@
 import Web3 from "web3";
 
-export const shortenAddress = (address) => {
-  if (address) return address.replace(address.substring(6, 34), " ... ");
+export const shortenAddress = (address, start = 6, end = 34) => {
+  if (address) return address.replace(address.substring(start, end), " ... ");
 };
 
 export const toWei = (amount) => {

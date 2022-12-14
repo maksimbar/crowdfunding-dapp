@@ -12,6 +12,7 @@ export const Nav = styled.nav`
   padding: 1rem;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 
 export const Ul = styled.ul`
@@ -70,4 +71,16 @@ export const Container = styled.div`
   gap: 0.5rem;
 `;
 
-export const Button = styled.button``;
+export const Button = styled.button`
+  cursor: pointer;
+  font-weight: 600;
+  background-color: #3c54d0;
+  border: none;
+  height: 2rem;
+  color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

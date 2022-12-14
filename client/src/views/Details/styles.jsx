@@ -4,6 +4,9 @@ import { sharedPreferences } from "../../utils/theme";
 export const Wrapper = styled.div`
   width: 100%;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `;
 
 export const InfoWrapper = styled.div`
@@ -37,11 +40,11 @@ export const Form = styled.form`
 
 export const FormHeading = styled.h3`
   text-align: center;
-  color: grey;
   margin: 0;
 `;
 
 export const DonateInfo = styled.p`
+  font-weight: 600;
   background-color: #101213;
   padding: 15px;
   text-align: center;
@@ -80,7 +83,6 @@ export const Container = styled.div`
 export const Title = styled.h1`
   align-self: start;
   margin: 0;
-  margin-bottom: 2rem;
 `;
 
 export const TitleContainer = styled.div`
@@ -109,6 +111,8 @@ export const Heading = styled.h4`
 
 export const Description = styled.p`
   margin: 0;
+  word-break: break-all;
+  white-space: normal;
 `;
 
 export const Backers = styled.div`
@@ -148,8 +152,6 @@ export const InfoBox = styled.div`
 
 export const AuthorAddress = styled.span`
   color: #069954;
-  font-weight: 600;
-  font-size: 0.75rem;
 `;
 
 export const InfoVal = styled.span`
@@ -191,6 +193,8 @@ export const Author = styled.div`
   padding: 1rem;
   border-radius: 10px;
   background-color: #1e1f25;
+  font-size: 0.9rem;
+  font-weight: 600;
 `;
 
 export const Table = styled.table`
@@ -223,13 +227,13 @@ export const CompaignDetails = styled.div`
 
 export const ListEl = styled.span`
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 `;
 
 export const Button = styled.button`
   cursor: pointer;
   width: 100%;
-  height: 2rem;
+  height: 2.5rem;
   border-radius: 10px;
   background-color: #3c54d0;
   color: #fff;

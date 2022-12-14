@@ -22,7 +22,7 @@ const NewFundraiser = () => {
     description: "",
     target: "",
     endDate: "",
-    image: "",
+    url: "",
   });
 
   const handleFormFieldChange = (fieldName, e) => {
@@ -44,10 +44,10 @@ const NewFundraiser = () => {
         PoolContract.abi,
         deployedNetwork && deployedNetwork.address
       );
+
       setWeb3(web3);
       setInstance(instance);
       setAccounts(accounts);
-      console.log(accounts);
     } catch (error) {
       alert(
         `Failed to load web3, accounts, or contract. Check console for details.`
@@ -71,9 +71,9 @@ const NewFundraiser = () => {
           accounts[0],
           form.title,
           form.description,
-          form.target,
+          web3.utils.toWei(form.target, "ether"),
           daysToSeconds(form.endDate),
-          form.image
+          form.url
         )
         .send({ from: accounts[0] });
 
@@ -84,11 +84,11 @@ const NewFundraiser = () => {
     }
     setIsLoading(false);
   };
-  console.log(form);
   return (
     <S.Wrapper>
       {isLoading && <Loader />}
       <S.Form onSubmit={handleSubmit}>
+        <S.Title>New Fundraiser</S.Title>
         <S.Container>
           <S.InputGroup>
             <FormField
@@ -100,7 +100,7 @@ const NewFundraiser = () => {
             />
             <FormField
               labelName="Goal *"
-              placeholder="ETH 0.50"
+              placeholder="0.50"
               inputType="number"
               value={form.target}
               handleChange={(e) => handleFormFieldChange("target", e)}
@@ -127,7 +127,7 @@ const NewFundraiser = () => {
               placeholder="Place image URL of your campaign"
               inputType="url"
               value={form.image}
-              handleChange={(e) => handleFormFieldChange("image", e)}
+              handleChange={(e) => handleFormFieldChange("url", e)}
             />
           </S.InputGroup>
         </S.Container>

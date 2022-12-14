@@ -36,3 +36,7 @@ export const FormButton = styled.button`
   border-radius: 10px;
   color: white;
 `;
+
+export const Title = styled.h1`
+  margin: 0;
+`;
