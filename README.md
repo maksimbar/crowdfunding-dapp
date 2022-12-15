@@ -30,6 +30,8 @@ Migrate compiled contracts
 truffle migrate --reset
 ```
 
+> You can now read the contract's ABI from JSON file under the client/src/contracts directory.
+
 ## Setting up the client
 
 To configure the client run the following command from the root directory
