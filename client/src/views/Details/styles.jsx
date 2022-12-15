@@ -21,7 +21,7 @@ export const InfoWrapper = styled.div`
 `;
 
 export const Form = styled.form`
-  display: none;
+  grid-column: span 1;
   position: relative;
   width: 100%;
   box-sizing: border-box;
@@ -55,7 +55,7 @@ export const DonateInfo = styled.p`
 `;
 
 export const Img = styled.img`
-  grid-column: span 2;
+  grid-column: span 3;
   border-radius: 10px;
   background-color: #1e1f25;
   height: 23rem;
@@ -234,6 +234,7 @@ export const Button = styled.button`
   cursor: pointer;
   width: 100%;
   height: 2.5rem;
+  font-weight: 600;
   border-radius: 10px;
   background-color: #3c54d0;
   color: #fff;

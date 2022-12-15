@@ -5,7 +5,7 @@ export const shortenAddress = (address, start = 6, end = 34) => {
 };
 
 export const toWei = (amount) => {
-  return parseFloat(Web3.utils.fromWei(amount, "ether")).toFixed(2);
+  return parseFloat(Web3.utils.fromWei(amount, "ether")).toFixed(3);
 };
 
 export const toDays = (seconds) => {

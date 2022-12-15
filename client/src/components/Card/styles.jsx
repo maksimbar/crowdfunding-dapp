@@ -24,6 +24,7 @@ export const Content = styled.div`
 `;
 
 export const Picture = styled.img`
+  transform: translateZ(0);
   width: 100%;
   height: 10rem;
   object-fit: cover;
@@ -33,6 +34,10 @@ export const Picture = styled.img`
 export const Title = styled.h3`
   text-transform: capitalize;
   margin: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 100%;
 `;
 
 export const Description = styled.p`

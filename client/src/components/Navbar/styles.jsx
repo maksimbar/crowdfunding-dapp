@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { colors } from "../../utils/theme";
 
 export const Nav = styled.nav`
+  z-index: 2;
   box-sizing: border-box;
   position: relative;
   background-color: #1e1f25;

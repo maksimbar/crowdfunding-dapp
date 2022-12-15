@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { sharedPreferences } from "../../utils/theme";
 
 export const Wrapper = styled.div`
   position: relative;
@@ -23,18 +24,30 @@ export const Form = styled.form`
 export const InputGroup = styled.div`
   display: flex;
   gap: 2rem;
+  @media (max-width: ${sharedPreferences.breakpoints.sm}) {
+    flex-direction: column;
+  }
 `;
 
 export const FormButton = styled.button`
   cursor: pointer;
-  width: 25rem;
-  font-weight: 600;
   align-self: center;
-  background-color: #3c54d0;
-  border: thin solid #3d3d3d;
+  width: 100%;
+  max-width: 25rem;
   height: 2.5rem;
+  font-weight: 600;
   border-radius: 10px;
-  color: white;
+  background-color: #3c54d0;
+  color: #fff;
+  border: none;
+  transition: opacity 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.7;
+  }
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
 `;
 
 export const Title = styled.h1`

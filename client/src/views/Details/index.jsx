@@ -99,7 +99,7 @@ const Details = () => {
   const uniqueBackers = [...new Set(backers)].map((value, index) => {
     return (
       <S.TxBlock>
-        <S.ListEl>{shortenAddress(value, 10, 27)}</S.ListEl>
+        <S.ListEl>{shortenAddress(value, 15, 35)}</S.ListEl>
       </S.TxBlock>
     );
   });
@@ -145,9 +145,10 @@ const Details = () => {
     setIsLoading(false);
   };
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <S.Wrapper>
-      {isLoading && <Loader />}
       <S.TitleContainer>
         <S.Title>{title}</S.Title>
       </S.TitleContainer>
@@ -173,7 +174,7 @@ const Details = () => {
             }}
             onSubmit={handleSubmit}
           >
-            <S.FormHeading>Fund this compaign</S.FormHeading>
+            <S.FormHeading>Fund this campaign</S.FormHeading>
             <FormField
               id="outlined-bare"
               placeholder="0.5"
@@ -194,7 +195,8 @@ const Details = () => {
           </S.InfoBox>
           <S.InfoBox>
             <S.InfoVal>
-              <i className="fa-brands fa-ethereum" /> {collected} / {target}
+              <i className="fa-brands fa-ethereum" /> {collected} /{" "}
+              <i className="fa-brands fa-ethereum" /> {target}
             </S.InfoVal>
             <S.InfoContext>raised</S.InfoContext>
             <S.InfoDetails>Total so far</S.InfoDetails>
@@ -206,7 +208,7 @@ const Details = () => {
           </S.InfoBox>
         </S.ProjectInfo>
         <S.Author>
-          This fundraiser campaign was started by{" "}
+          This fundraising campaign was started by{" "}
           <S.AuthorAddress>{owner}</S.AuthorAddress>
         </S.Author>
         <S.CompaignDetails>

@@ -13,7 +13,6 @@ const NewFundraiser = () => {
 
   const [web3, setWeb3] = useState(null);
   const [instance, setInstance] = useState(null);
-  const [funds, setFunds] = useState();
   const [accounts, setAccounts] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
@@ -37,13 +36,15 @@ const NewFundraiser = () => {
     try {
       const provider = await detectEthereumProvider();
       const web3 = new Web3(provider);
-      const networkId = await web3.eth.net.getId();
       const accounts = await web3.eth.getAccounts();
+      const networkId = await web3.eth.net.getId();
       const deployedNetwork = PoolContract.networks[networkId];
       const instance = new web3.eth.Contract(
         PoolContract.abi,
         deployedNetwork && deployedNetwork.address
       );
+
+      // instance.options.address = "0x8469c193d25d2eF6039444cADFaCF9B34bCCaFA6";
 
       setWeb3(web3);
       setInstance(instance);
@@ -92,9 +93,9 @@ const NewFundraiser = () => {
         <S.Container>
           <S.InputGroup>
             <FormField
-              labelName="Campaign title*"
+              labelName="Campaign title *"
               id="outlined-bare"
-              placeholder="Fundraiser Title"
+              placeholder="Fundraiser title"
               value={form.title}
               handleChange={(e) => handleFormFieldChange("title", e)}
             />
@@ -107,24 +108,24 @@ const NewFundraiser = () => {
             />
           </S.InputGroup>
           <FormField
-            labelName="Campaign description*"
+            labelName="Campaign description *"
             id="outlined-bare"
-            placeholder="Fundraiser Description"
+            placeholder="Fundraiser description"
             value={form.description}
             isTextArea={true}
             handleChange={(e) => handleFormFieldChange("description", e)}
           />
           <S.InputGroup>
             <FormField
-              labelName="Days "
-              placeholder="End Date"
+              labelName="Days until completion*"
+              placeholder="Days until completion"
               inputType="number"
               value={form.endDate}
               handleChange={(e) => handleFormFieldChange("endDate", e)}
             />
             <FormField
               labelName="Campaign image *"
-              placeholder="Place image URL of your campaign"
+              placeholder="Image URL of your campaign"
               inputType="url"
               value={form.image}
               handleChange={(e) => handleFormFieldChange("url", e)}

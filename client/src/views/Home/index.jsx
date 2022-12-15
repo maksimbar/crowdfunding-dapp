@@ -4,6 +4,7 @@ import Web3 from "web3";
 import Card from "../../components/Card";
 import * as S from "./styles.jsx";
 import Loader from "../../components/Loader";
+import { sleep } from "../../utils";
 
 const Home = () => {
   const [campaigns, setCampaigns] = useState([]);
@@ -31,6 +32,9 @@ const Home = () => {
 
       setTotalCampaigns(totalCampaigns);
       setCampaigns(campaigns);
+
+      await sleep(1500);
+
       setIsLoading(false);
     } catch (error) {
       console.log(
@@ -41,16 +45,21 @@ const Home = () => {
   };
   return (
     <S.Wrapper>
-      <S.Title>All Fundraisers ({totalCampaigns})</S.Title>
-      {totalCampaigns > 0 ? (
-        <S.CardBox>
-          {isLoading && <Loader />}
-          {[...campaigns].reverse().map((item, key) => (
-            <Card key={key} fundraiser={item} />
-          ))}
-        </S.CardBox>
+      {isLoading ? (
+        <Loader />
       ) : (
-        "Nothing here yet, feel free to start a new fundraising campaign!"
+        <>
+          <S.Title>All Fundraisers ({totalCampaigns})</S.Title>
+          {totalCampaigns > 0 ? (
+            <S.CardBox>
+              {[...campaigns].reverse().map((item, key) => (
+                <Card key={key} fundraiser={item} />
+              ))}
+            </S.CardBox>
+          ) : (
+            "Nothing here yet, feel free to start a new fundraising campaign!"
+          )}
+        </>
       )}
     </S.Wrapper>
   );

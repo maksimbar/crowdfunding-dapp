@@ -12,7 +12,7 @@ const FormField = ({
 }) => {
   return (
     <S.Wrapper>
-      <S.Label htmlFor={id}>{labelName}</S.Label>
+      {labelName && <S.Label htmlFor={id}>{labelName}</S.Label>}
       {isTextArea ? (
         <S.Textarea
           required
