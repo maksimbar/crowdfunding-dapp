@@ -79,7 +79,7 @@ const NewFundraiser = () => {
         .send({ from: accounts[0] });
 
       navigate("/home");
-      notify("Compaign created successfully");
+      notify("Campaign created successfully");
     } catch (error) {
       notify("Transaction rejected");
     }

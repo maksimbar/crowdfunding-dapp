@@ -26,6 +26,10 @@ contract Campaign {
         url = _url;
     }
 
+   event DonationReceived (address indexed donor, uint256 value);
+   event CampaignCompleted(uint256 collected);
+
+
     function getDonations () public view returns (uint256[] memory) {    
         return donations;
     }
@@ -36,6 +40,7 @@ contract Campaign {
 
     function claimTimeout() public {
         isCompleted = true;
+        emit CampaignCompleted(collected);
     }
 
     function donateToCampaign() public payable {
@@ -47,5 +52,7 @@ contract Campaign {
         owner.transfer(amount);
 
         collected += amount;
+
+        emit DonationReceived (msg.sender, msg.value);
     }
 }

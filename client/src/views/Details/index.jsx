@@ -85,6 +85,7 @@ const Details = () => {
 
       if (endDate < dateInSecs && !isCompleted) {
         await instance.methods.claimTimeout().send({ from: accounts[0] });
+        navigate("/home");
       }
 
       setIsLoading(false);
